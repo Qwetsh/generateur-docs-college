@@ -694,6 +694,7 @@ document.querySelectorAll('.doc-tab').forEach(function (tab) {
     var target = tab.getAttribute('data-doc');
     document.getElementById('form-captation').classList.toggle('hidden', target !== 'captation');
     document.getElementById('form-sortie').classList.toggle('hidden', target !== 'sortie');
+    document.getElementById('form-demande').classList.toggle('hidden', target !== 'demande');
     document.getElementById('pdf-preview').classList.add('hidden');
   });
 });

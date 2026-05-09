@@ -187,8 +187,159 @@ textarea {
   margin-bottom: 0.2rem;
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type="checkbox"],
+.checkbox-label input[type="radio"] {
   width: auto;
+}
+
+.radio-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.3rem;
+}
+
+/* Budget */
+.budget-container {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.budget-col {
+  flex: 1;
+}
+
+.budget-col h3 {
+  color: #000091;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.budget-section {
+  margin-bottom: 0.75rem;
+}
+
+.budget-section h4 {
+  font-size: 0.8rem;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.2rem;
+}
+
+.budget-input {
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.budget-readonly {
+  background: #f0f0f0;
+  font-weight: 600;
+}
+
+.budget-total {
+  background: #f5f5fe;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #000091;
+}
+
+.budget-balance {
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Small buttons */
+.btn-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  background: #f5f5fe;
+  color: #000091;
+  border: 1px solid #000091;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.btn-small:hover {
+  background: #000091;
+  color: white;
+}
+
+.btn-remove {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #d00;
+  border: 1px solid #d00;
+  border-radius: 4px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-remove:hover {
+  background: #d00;
+  color: white;
+}
+
+/* Eleves table */
+.eleves-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.eleves-table th {
+  background: #f5f5fe;
+  padding: 0.4rem;
+  text-align: left;
+  color: #000091;
+  border-bottom: 2px solid #000091;
+  font-size: 0.75rem;
+}
+
+.eleves-table td {
+  padding: 0.3rem 0.4rem;
+  border-bottom: 1px solid #eee;
+}
+
+.eleves-table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* Preview/Download buttons - generic */
+[id^="btn-preview"] {
+  background: white;
+  color: #000091;
+  border: 2px solid #000091;
+}
+
+[id^="btn-preview"]:hover {
+  background: #f5f5fe;
+}
+
+[id^="btn-download"] {
+  background: #000091;
+  color: white;
+}
+
+[id^="btn-download"]:hover {
+  background: #0000b8;
 }
 
 /* Actions */

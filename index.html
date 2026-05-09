@@ -16,6 +16,7 @@
     <nav class="doc-nav">
       <button class="doc-tab active" data-doc="captation">Autorisation Captation Image/Son</button>
       <button class="doc-tab" data-doc="sortie">Sortie Scolaire Obligatoire</button>
+      <button class="doc-tab" data-doc="demande">Demande Sortie/Sejour</button>
     </nav>
 
     <form id="form-captation">
@@ -220,6 +221,322 @@
       </div>
     </form>
 
+    <!-- ═══════ FORMULAIRE DEMANDE SORTIE/SEJOUR ═══════ -->
+    <form id="form-demande" class="hidden">
+
+      <!-- DESTINATION -->
+      <fieldset>
+        <legend>Destination</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Lieu</label>
+            <div class="radio-row">
+              <label class="checkbox-label"><input type="radio" name="dem-pays" value="france" checked> France</label>
+              <label class="checkbox-label"><input type="radio" name="dem-pays" value="etranger"> Etranger</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dem-departement">Departement / Pays</label>
+            <input type="text" id="dem-departement" placeholder="Ex: Moselle">
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="dem-adresse">Adresse du lieu de sortie/voyage</label>
+          <input type="text" id="dem-adresse" placeholder="Adresse complete si possible">
+        </div>
+      </fieldset>
+
+      <!-- TYPE DE DEPLACEMENT -->
+      <fieldset>
+        <legend>Type de deplacement</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nature</label>
+            <div class="radio-row">
+              <label class="checkbox-label"><input type="radio" name="dem-nature" value="obligatoire" checked> Obligatoire</label>
+              <label class="checkbox-label"><input type="radio" name="dem-nature" value="facultatif"> Facultatif</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <div class="radio-row">
+              <label class="checkbox-label"><input type="radio" name="dem-type" value="sortie" checked> Sortie (sans nuitee)</label>
+              <label class="checkbox-label"><input type="radio" name="dem-type" value="sejour"> Sejour avec nuitee</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" id="dem-sejour-details" style="display:none">
+          <div class="form-group">
+            <label>Reciprocite</label>
+            <div class="radio-row">
+              <label class="checkbox-label"><input type="radio" name="dem-reciprocite" value="sans" checked> Sans reciprocite</label>
+              <label class="checkbox-label"><input type="radio" name="dem-reciprocite" value="avec"> Avec reciprocite</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dem-hebergement">Nom et adresse hebergement/etablissement partenaire</label>
+            <input type="text" id="dem-hebergement" placeholder="Nom et adresse">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-transport">Moyen de transport</label>
+            <select id="dem-transport">
+              <option value="Bus">Bus</option>
+              <option value="Train">Train</option>
+              <option value="Avion">Avion</option>
+              <option value="A pied">A pied</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dem-transport-precision">Compagnie / precision</label>
+            <input type="text" id="dem-transport-precision" placeholder="Ex: compagnie, commune...">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- RESPONSABLE -->
+      <fieldset>
+        <legend>Responsable de la sortie</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-responsable">Nom Prenom</label>
+            <input type="text" id="dem-responsable" placeholder="Ex: DUPONT Jean">
+          </div>
+          <div class="form-group">
+            <label for="dem-qualite">Qualite</label>
+            <input type="text" id="dem-qualite" placeholder="Ex: Professeur de SVT">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-tel-urgence">Telephone en cas d'urgence</label>
+            <input type="tel" id="dem-tel-urgence" placeholder="06 ...">
+          </div>
+          <div class="form-group">
+            <label for="dem-tel-chef">Telephone chef d'etablissement</label>
+            <input type="tel" id="dem-tel-chef" value="03 87 54 36 40">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- DATES -->
+      <fieldset>
+        <legend>Renseignements du deplacement</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-date-depart">Date de depart</label>
+            <input type="date" id="dem-date-depart">
+          </div>
+          <div class="form-group">
+            <label for="dem-heure-depart">Heure depart</label>
+            <input type="time" id="dem-heure-depart">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-date-retour">Date de retour</label>
+            <input type="date" id="dem-date-retour">
+          </div>
+          <div class="form-group">
+            <label for="dem-heure-retour">Heure retour</label>
+            <input type="time" id="dem-heure-retour">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-lieu-depart">Lieu de depart</label>
+            <input type="text" id="dem-lieu-depart" value="Clg P. Mendes France WOIPPY">
+          </div>
+          <div class="form-group">
+            <label for="dem-lieu-retour">Lieu de retour</label>
+            <input type="text" id="dem-lieu-retour" value="Clg P. Mendes France WOIPPY">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dem-nb-journees">Nombre de demi-journee(s) sur temps scolaire (max 10 sauf appariement)</label>
+          <input type="number" id="dem-nb-journees" min="1" max="20" value="1">
+        </div>
+      </fieldset>
+
+      <!-- CLASSES -->
+      <fieldset>
+        <legend>Composition du groupe</legend>
+        <p class="fieldset-hint">Ajoutez les classes concernees avec leurs effectifs.</p>
+        <div id="dem-classes-list">
+          <div class="form-row dem-classe-row">
+            <div class="form-group"><label>Classe</label><input type="text" class="dem-classe-nom" placeholder="Ex: 5e3"></div>
+            <div class="form-group"><label>Effectif classe</label><input type="number" class="dem-classe-effectif" min="0" placeholder="30"></div>
+            <div class="form-group"><label>Eleves participants</label><input type="number" class="dem-classe-participants" min="0" placeholder="28"></div>
+          </div>
+        </div>
+        <button type="button" id="dem-add-classe" class="btn-small">+ Ajouter une classe</button>
+      </fieldset>
+
+      <!-- CONTENU PEDAGOGIQUE -->
+      <fieldset>
+        <legend>Contenu pedagogique</legend>
+        <div class="form-group">
+          <label>Domaines</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-arts"> Arts / Culture</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-orientation"> Orientation</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-scientifique"> Scientifique</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-linguistique"> Linguistique</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-technique"> Technique / Technologique</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-sportif"> Sportif</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-appariement"> Appariement</label>
+            <label class="checkbox-label"><input type="checkbox" id="dem-dom-autre"> Autre</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="dem-disciplines">Disciplines concernees</label>
+          <input type="text" id="dem-disciplines" placeholder="Ex: SVT, Physique-Chimie">
+        </div>
+        <div class="form-group full">
+          <label for="dem-objectifs">Objectifs poursuivis</label>
+          <textarea id="dem-objectifs" rows="3" placeholder="Objectifs pedagogiques..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label for="dem-liens">Liens avec le projet d'etablissement et les parcours educatifs</label>
+          <textarea id="dem-liens" rows="2" placeholder="Parcours citoyen, avenir, sante, artistique..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label for="dem-activites">Description des activites</label>
+          <textarea id="dem-activites" rows="3" placeholder="Detaillez les activites prevues..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label for="dem-travaux-prepa">Travaux preparatoires</label>
+          <textarea id="dem-travaux-prepa" rows="2" placeholder="Travaux en amont de la sortie..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label for="dem-restitution">Restitution des travaux, exploitation(s), modalites d'evaluation</label>
+          <textarea id="dem-restitution" rows="2" placeholder="Bilan, evaluation, restitution..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label for="dem-non-participants">Dispositions prevues pour les eleves ne participant pas</label>
+          <textarea id="dem-non-participants" rows="2" placeholder="Ex: cours normal avec un autre professeur..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-date-prepa">Date previsionnelle preparation pedagogique</label>
+            <input type="date" id="dem-date-prepa">
+          </div>
+          <div class="form-group">
+            <label for="dem-date-bilan">Date previsionnelle bilan pedagogique</label>
+            <input type="date" id="dem-date-bilan">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- BUDGET -->
+      <fieldset>
+        <legend>Budget previsionnel</legend>
+        <div class="budget-container">
+          <div class="budget-col">
+            <h3>Recettes</h3>
+            <div class="budget-section">
+              <h4>Participation</h4>
+              <div class="form-row">
+                <div class="form-group"><label>Nb familles</label><input type="number" id="dem-budget-nb-familles" min="0" class="budget-input" placeholder="0"></div>
+                <div class="form-group"><label>x montant (EUR)</label><input type="number" id="dem-budget-montant-famille" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+                <div class="form-group"><label>Total familles</label><input type="text" id="dem-budget-total-familles" class="budget-input budget-readonly" readonly></div>
+              </div>
+              <div class="form-group"><label>Etablissement (EUR)</label><input type="number" id="dem-budget-etablissement" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Dons (associations, FSE, MDL) (EUR)</label><input type="number" id="dem-budget-dons" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+            </div>
+            <div class="budget-section">
+              <h4>Subventions attendues</h4>
+              <div class="form-group"><label>Commune / Communaute de communes</label><input type="number" id="dem-budget-sub-commune" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Conseil Departemental</label><input type="number" id="dem-budget-sub-dept" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Conseil Regional</label><input type="number" id="dem-budget-sub-region" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Etat</label><input type="number" id="dem-budget-sub-etat" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Autres subventions</label><input type="number" id="dem-budget-sub-autres" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+            </div>
+            <div class="budget-total">
+              <strong>TOTAL RECETTES : <span id="dem-budget-total-recettes">0.00</span> EUR</strong>
+            </div>
+          </div>
+          <div class="budget-col">
+            <h3>Depenses</h3>
+            <div class="budget-section">
+              <h4>Transport</h4>
+              <div class="form-group"><label>Bus</label><input type="number" id="dem-budget-dep-bus" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Train</label><input type="number" id="dem-budget-dep-train" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Avion</label><input type="number" id="dem-budget-dep-avion" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Autres transport</label><input type="number" id="dem-budget-dep-transport-autre" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+            </div>
+            <div class="budget-section">
+              <h4>Hebergement / Repas</h4>
+              <div class="form-group"><label>Hebergement</label><input type="number" id="dem-budget-dep-hebergement" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Repas</label><input type="number" id="dem-budget-dep-repas" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+            </div>
+            <div class="budget-section">
+              <h4>Activites / Divers</h4>
+              <div class="form-group"><label>Activites / Visites</label><input type="number" id="dem-budget-dep-activites" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Materiel pedagogique</label><input type="number" id="dem-budget-dep-materiel" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+              <div class="form-group"><label>Divers</label><input type="number" id="dem-budget-dep-divers" min="0" step="0.01" class="budget-input" placeholder="0"></div>
+            </div>
+            <div class="budget-total">
+              <strong>TOTAL DEPENSES : <span id="dem-budget-total-depenses">0.00</span> EUR</strong>
+            </div>
+          </div>
+        </div>
+        <div class="budget-balance" id="dem-budget-balance"></div>
+      </fieldset>
+
+      <!-- ACCOMPAGNATEURS -->
+      <fieldset>
+        <legend>Accompagnateurs</legend>
+        <div id="dem-accompagnateurs-list">
+          <div class="form-row dem-accomp-row">
+            <div class="form-group"><label>Nom Prenom</label><input type="text" class="dem-accomp-nom" placeholder="Nom Prenom"></div>
+            <div class="form-group"><label>Qualite</label><input type="text" class="dem-accomp-qualite" placeholder="Enseignant, parent..."></div>
+            <div class="form-group"><label>Telephone</label><input type="tel" class="dem-accomp-tel" placeholder="06 ..."></div>
+          </div>
+        </div>
+        <button type="button" id="dem-add-accomp" class="btn-small">+ Ajouter un accompagnateur</button>
+      </fieldset>
+
+      <!-- IMPORT ELEVES -->
+      <fieldset>
+        <legend>Liste des eleves</legend>
+        <p class="fieldset-hint">Importez un fichier CSV exporte depuis votre logiciel de gestion (separateur: point-virgule). Les colonnes Nom et Sexe seront extraites automatiquement.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dem-csv-file">Importer un CSV</label>
+            <input type="file" id="dem-csv-file" accept=".csv">
+          </div>
+          <div class="form-group">
+            <label for="dem-eleves-classe">Classe(s) pour cette liste</label>
+            <input type="text" id="dem-eleves-classe" placeholder="Ex: 5e3">
+          </div>
+        </div>
+        <div id="dem-eleves-preview" class="hidden">
+          <p><strong id="dem-eleves-count">0</strong> eleves importes</p>
+          <table class="eleves-table" id="dem-eleves-table">
+            <thead><tr><th></th><th>Nom</th><th>Prenom</th><th>Sexe</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </fieldset>
+
+      <!-- INCIDENCES EMPLOI DU TEMPS -->
+      <fieldset>
+        <legend>Incidences sur l'emploi du temps</legend>
+        <div class="form-group full">
+          <label for="dem-incidences">Classes et accompagnateurs impactes</label>
+          <textarea id="dem-incidences" rows="4" placeholder="Detaillez les incidences sur l'emploi du temps des classes et des accompagnateurs..."></textarea>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" id="btn-preview-demande">Apercu PDF</button>
+        <button type="button" id="btn-download-demande">Telecharger PDF</button>
+      </div>
+    </form>
+
     <div id="pdf-preview" class="pdf-preview hidden">
       <h2>Apercu</h2>
       <iframe id="pdf-iframe"></iframe>
@@ -228,5 +545,6 @@
 
   <script src="lib/jspdf.umd.min.js"></script>
   <script src="app.js"></script>
+  <script src="demande.js"></script>
 </body>
 </html>

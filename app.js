@@ -439,7 +439,7 @@ function buildPDF(data) {
 
   y += 4;
   y = wrappedText(doc,
-    "Pour exercer vos droits ou pour toute question sur le traitement de vos donnees, vous pouvez contacter le delegue a la protection des donnees a l'adresse suivante: dpd@ac-...... Si vous estimez que vos droits ne sont pas respectes vous pouvez adresser une reclamation aupres de la CNIL, en ligne sur www.cnil.fr ou par voie postale a l'adresse suivante : 3 place de Fontenoy - TSA 80715 - 75334 PARIS Cedex 07",
+    "Pour exercer vos droits ou pour toute question sur le traitement de vos donnees, vous pouvez contacter le delegue a la protection des donnees a l'adresse suivante: dpd@ac-nancy-metz.fr Si vous estimez que vos droits ne sont pas respectes vous pouvez adresser une reclamation aupres de la CNIL, en ligne sur www.cnil.fr ou par voie postale a l'adresse suivante : 3 place de Fontenoy - TSA 80715 - 75334 PARIS Cedex 07",
     ML, y, CONTENT_W, 3.2);
 
   y += 6;

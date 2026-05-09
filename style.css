@@ -322,6 +322,27 @@ textarea {
   background: #fafafa;
 }
 
+.eleves-table input,
+.eleves-table select {
+  width: 100%;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.eleves-table .eleve-sexe {
+  width: 50px;
+}
+
+.eleves-table .eleve-num {
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+  width: 30px;
+}
+
 /* Preview/Download buttons - generic */
 [id^="btn-preview"] {
   background: white;

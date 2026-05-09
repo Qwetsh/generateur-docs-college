@@ -45,18 +45,66 @@ document.getElementById('dem-csv-file').addEventListener('change', function (e) 
       });
     }
 
-    // Display preview
-    var tbody = document.querySelector('#dem-eleves-table tbody');
-    tbody.innerHTML = '';
-    importedEleves.forEach(function (el, idx) {
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>' + (idx + 1) + '</td><td>' + el.nom + '</td><td>' + el.prenom + '</td><td>' + el.sexe + '</td>';
-      tbody.appendChild(tr);
-    });
-    document.getElementById('dem-eleves-count').textContent = importedEleves.length;
+    // Display editable table
+    renderElevesTable(importedEleves);
     document.getElementById('dem-eleves-preview').classList.remove('hidden');
   };
   reader.readAsText(file, 'utf-8');
+});
+
+// ── Render editable eleves table ──
+function renderElevesTable(eleves) {
+  var tbody = document.querySelector('#dem-eleves-table tbody');
+  tbody.innerHTML = '';
+  eleves.forEach(function (el) { addEleveRow(tbody, el); });
+  updateElevesCount();
+}
+
+function addEleveRow(tbody, el) {
+  var tr = document.createElement('tr');
+  tr.innerHTML = '<td class="eleve-num"></td>'
+    + '<td><input type="text" class="eleve-nom" value="' + (el.nom || '') + '"></td>'
+    + '<td><input type="text" class="eleve-prenom" value="' + (el.prenom || '') + '"></td>'
+    + '<td><select class="eleve-sexe"><option value="M"' + (el.sexe === 'M' ? ' selected' : '') + '>M</option><option value="F"' + (el.sexe === 'F' ? ' selected' : '') + '>F</option></select></td>'
+    + '<td><input type="tel" class="eleve-tel" value="' + (el.tel || '') + '" placeholder="06 ..."></td>'
+    + '<td><button type="button" class="btn-remove" style="padding:0.15rem 0.4rem;font-size:0.75rem">✕</button></td>';
+  tr.querySelector('.btn-remove').addEventListener('click', function () {
+    tr.remove();
+    updateElevesCount();
+  });
+  tbody.appendChild(tr);
+  updateElevesCount();
+}
+
+function updateElevesCount() {
+  var count = document.querySelectorAll('#dem-eleves-table tbody tr').length;
+  document.getElementById('dem-eleves-count').textContent = count;
+  // Update row numbers
+  document.querySelectorAll('#dem-eleves-table tbody tr').forEach(function (tr, i) {
+    tr.querySelector('.eleve-num').textContent = i + 1;
+  });
+}
+
+function collectElevesFromTable() {
+  var eleves = [];
+  document.querySelectorAll('#dem-eleves-table tbody tr').forEach(function (tr) {
+    var nom = tr.querySelector('.eleve-nom').value.trim();
+    if (nom) {
+      eleves.push({
+        nom: nom,
+        prenom: tr.querySelector('.eleve-prenom').value.trim(),
+        sexe: tr.querySelector('.eleve-sexe').value,
+        tel: tr.querySelector('.eleve-tel').value.trim()
+      });
+    }
+  });
+  return eleves;
+}
+
+document.getElementById('dem-add-eleve').addEventListener('click', function () {
+  var tbody = document.querySelector('#dem-eleves-table tbody');
+  addEleveRow(tbody, {});
+  document.getElementById('dem-eleves-preview').classList.remove('hidden');
 });
 
 // ── Sejour toggle ──
@@ -235,7 +283,7 @@ function collectDemandeData() {
       depDivers: n('dem-budget-dep-divers'),
     },
     accompagnateurs: accompagnateurs,
-    eleves: importedEleves,
+    eleves: collectElevesFromTable(),
     elevesClasse: v('dem-eleves-classe'),
     incidences: v('dem-incidences'),
   };
@@ -519,6 +567,7 @@ function buildDemandePDF(data) {
     doc.text(el.nom || '', ML + 10, y);
     doc.text(el.prenom || '', ML + 60, y);
     doc.text(el.sexe || '', ML + 110, y);
+    doc.text(el.tel || '', ML + 130, y);
     doc.setDrawColor(230, 230, 230); doc.setLineWidth(0.1);
     doc.line(ML, y + 1.5, ML + CW, y + 1.5);
     y += 4;

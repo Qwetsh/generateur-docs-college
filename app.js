@@ -452,21 +452,289 @@ function buildPDF(data) {
   return doc;
 }
 
-// ── Event listeners ──
+// ═══════════════════════════════════════════════
+// SORTIE SCOLAIRE - PDF Generation
+// ═══════════════════════════════════════════════
+
+function collectSortieData() {
+  return {
+    organisateur: val('sortie-organisateur'),
+    fonction: val('sortie-fonction'),
+    date: formatDate(val('sortie-date')),
+    classe: val('sortie-classe'),
+    lieu: val('sortie-lieu'),
+    heureDepart: val('sortie-heure-depart'),
+    heureRetour: val('sortie-heure-retour'),
+    matiere: val('sortie-matiere'),
+    objectifs: val('sortie-objectifs'),
+    transport: sel('sortie-transport'),
+    dateRetourCoupon: formatDate(val('sortie-date-retour')),
+    lieuDepart: val('sortie-lieu-depart'),
+    lieuArrivee: val('sortie-lieu-arrivee'),
+  };
+}
+
+function buildSortiePDF(data) {
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  let y = 10;
+
+  // ── Header blue bar ──
+  doc.setFillColor(...BLUE);
+  doc.rect(0, 0, PAGE_W, 8, 'F');
+
+  // Logo
+  if (logoPNG) {
+    doc.addImage(logoPNG, 'PNG', ML, 10, 25, 25);
+  }
+
+  // College name top right
+  y = 16;
+  setFont(doc, 'bold', 10, BLUE);
+  doc.text('College Pierre Mendes France', PAGE_W - MR, y, { align: 'right' });
+  setFont(doc, 'normal', 8, GRAY);
+  doc.text('57140 WOIPPY - Tel. 03 87 54 36 40', PAGE_W - MR, y + 5, { align: 'right' });
+
+  // Title
+  y = 42;
+  setFont(doc, 'bold', 14, BLUE);
+  doc.text('INFORMATION AUX PARENTS', PAGE_W / 2, y, { align: 'center' });
+  y += 6;
+  setFont(doc, 'bold', 12, BLUE);
+  doc.text('Sortie scolaire obligatoire', PAGE_W / 2, y, { align: 'center' });
+
+  // Underline
+  y += 2;
+  doc.setDrawColor(...BLUE);
+  doc.setLineWidth(0.5);
+  const tw = doc.getTextWidth('Sortie scolaire obligatoire');
+  doc.line((PAGE_W - tw) / 2, y, (PAGE_W + tw) / 2, y);
+
+  // ── Body ──
+  y += 10;
+  setFont(doc, 'normal', 10, BLACK);
+  doc.text('Madame, Monsieur,', ML, y);
+
+  y += 8;
+  setFont(doc, 'normal', 10, BLACK);
+  doc.text('Une sortie pedagogique ', ML, y);
+  setFont(doc, 'bold', 10, BLACK);
+  doc.text('gratuite', ML + doc.getTextWidth('Une sortie pedagogique '), y);
+  setFont(doc, 'normal', 10, BLACK);
+  doc.text(' est organisee par :', ML + doc.getTextWidth('Une sortie pedagogique gratuite'), y);
+
+  // Info box
+  y += 6;
+  doc.setFillColor(...LIGHT_BLUE_BG);
+  doc.roundedRect(ML, y, CONTENT_W, 42, 2, 2, 'F');
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Organisateur :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(`${data.organisateur} (${data.fonction})`, ML + 35, y);
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Date :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(data.date || '...', ML + 35, y);
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Classe(s) :', PAGE_W / 2 + 10, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(data.classe || '...', PAGE_W / 2 + 35, y);
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Lieu :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(data.lieu || '...', ML + 35, y);
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Horaires :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(`De ${data.heureDepart || '...'} a ${data.heureRetour || '...'}`, ML + 35, y);
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Matiere(s) :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text(data.matiere || '...', ML + 35, y);
+
+  y += 6;
+  setFont(doc, 'bold', 9, BLUE);
+  doc.text('Objectifs :', ML + 4, y);
+  setFont(doc, 'normal', 9, BLACK);
+  const objLines = doc.splitTextToSize(data.objectifs || '...', CONTENT_W - 39);
+  doc.text(objLines, ML + 35, y);
+
+  // Adjust box height if objectives overflow
+  const objH = objLines.length * 4;
+  if (objLines.length > 1) {
+    // Redraw box bigger
+    const boxY = y - 36;
+    const boxH = 42 + (objLines.length - 1) * 4;
+    doc.setFillColor(...LIGHT_BLUE_BG);
+    doc.roundedRect(ML, boxY, CONTENT_W, boxH, 2, 2, 'F');
+    // Redraw content (simplified - works because PDF layers)
+  }
+
+  y += objH + 4;
+
+  // Important notice
+  y += 4;
+  doc.setFillColor(255, 245, 230);
+  doc.setDrawColor(220, 120, 0);
+  doc.setLineWidth(0.4);
+  doc.roundedRect(ML, y, CONTENT_W, 10, 2, 2, 'FD');
+  setFont(doc, 'bold', 10, [220, 120, 0]);
+  doc.text('Cette sortie, organisee sur le temps scolaire, est gratuite et donc obligatoire.', ML + 4, y + 7);
+
+  y += 16;
+  setFont(doc, 'normal', 9, BLACK);
+  y = wrappedText(doc,
+    "Le reglement interieur de l'etablissement s'applique aux eleves pendant la sortie.",
+    ML, y, CONTENT_W, 4);
+
+  y += 4;
+  y = wrappedText(doc,
+    "Nous vous remercions de nous signaler tout probleme physique auquel votre enfant pourrait etre sujet pendant la sortie (allergie, precautions particulieres).",
+    ML, y, CONTENT_W, 4);
+
+  // ── Separator ──
+  y += 8;
+  doc.setDrawColor(200, 200, 200);
+  doc.setLineWidth(0.3);
+  doc.setLineDashPattern([2, 2], 0);
+  doc.line(ML, y, ML + CONTENT_W, y);
+  doc.setLineDashPattern([], 0);
+
+  // Scissors icon
+  setFont(doc, 'normal', 10, GRAY);
+  doc.text('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', ML, y + 1);
+
+  // ── ACCUSE DE RECEPTION ──
+  y += 8;
+  setFont(doc, 'bold', 12, BLUE);
+  doc.text("ACCUSE DE RECEPTION D'INFORMATION", PAGE_W / 2, y, { align: 'center' });
+  y += 5;
+  doc.text('DE SORTIE SCOLAIRE OBLIGATOIRE', PAGE_W / 2, y, { align: 'center' });
+
+  y += 7;
+  setFont(doc, 'bold', 9, BLACK);
+  doc.text(`A retourner a ${data.organisateur || 'M/Mme _______________'}`, ML, y);
+  doc.text(`Avant le : ${data.dateRetourCoupon || '___ / ___ / 20___'}`, PAGE_W - MR, y, { align: 'right' });
+
+  y += 8;
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text('Je soussigne(e) (Nom, Prenom) : ________________________________________________', ML, y);
+
+  y += 6;
+  doc.text('Representant legal de l\'eleve (Nom, Prenom) : _______________________________________ Classe : ______', ML, y);
+
+  y += 6;
+  doc.text(`accuse reception de l'information de sortie scolaire gratuite et obligatoire organisee le ${data.date || '___ / ___ / 20___'}.`, ML, y);
+
+  y += 6;
+  doc.text(`Heure de depart : ${data.heureDepart || '___h___'}  -  Heure de retour : ${data.heureRetour || '___h___'}`, ML, y);
+
+  y += 6;
+  doc.text(`Lieu de la sortie : ${data.lieu || '______________________________'}`, ML, y);
+  doc.text(`Mode de transport : ${data.transport}`, PAGE_W / 2 + 10, y);
+
+  y += 6;
+  doc.text(`Lieu de depart : ${data.lieuDepart}  -  Lieu d'arrivee : ${data.lieuArrivee}`, ML, y);
+
+  y += 8;
+  setFont(doc, 'normal', 8.5, BLACK);
+  y = wrappedText(doc,
+    "Je declare avoir souscrit une assurance responsabilite civile et garantie individuelle aupres de la societe ________________________________________________ (Police n ______________________________________).",
+    ML, y, CONTENT_W, 3.5);
+
+  y += 5;
+  setFont(doc, 'bold', 8.5, BLACK);
+  doc.text('Mon enfant presente le probleme physique suivant auquel il pourrait etre sujet au cours de la sortie :', ML, y);
+  y += 5;
+  doc.setDrawColor(0);
+  doc.setLineWidth(0.3);
+  doc.line(ML, y, ML + CONTENT_W, y);
+  y += 4;
+  doc.line(ML, y, ML + CONTENT_W, y);
+
+  y += 6;
+  // Checkboxes
+  doc.rect(ML, y - 3, 3, 3);
+  setFont(doc, 'bold', 8.5, BLACK);
+  doc.text('Un PAI (Projet d\'Accueil Individualise) a ete complete et valide durant cette annee scolaire.', ML + 5, y);
+
+  y += 6;
+  doc.rect(ML, y - 3, 3, 3);
+  doc.text('J\'autorise l\'organisateur/trice de la sortie a prendre les mesures d\'urgence en cas d\'accident.', ML + 5, y);
+
+  y += 8;
+  setFont(doc, 'normal', 9, BLACK);
+  doc.text('Date : ___________________', ML, y);
+  doc.text('Signature du representant legal :', PAGE_W / 2 + 10, y);
+
+  // Page number
+  setFont(doc, 'normal', 8, GRAY);
+  doc.text('College Pierre Mendes France - Woippy', ML, PAGE_H - 10);
+
+  return doc;
+}
+
+// ═══════════════════════════════════════════════
+// TAB NAVIGATION
+// ═══════════════════════════════════════════════
+
+document.querySelectorAll('.doc-tab').forEach(function (tab) {
+  tab.addEventListener('click', function () {
+    document.querySelectorAll('.doc-tab').forEach(function (t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    var target = tab.getAttribute('data-doc');
+    document.getElementById('form-captation').classList.toggle('hidden', target !== 'captation');
+    document.getElementById('form-sortie').classList.toggle('hidden', target !== 'sortie');
+    document.getElementById('pdf-preview').classList.add('hidden');
+  });
+});
+
+// ═══════════════════════════════════════════════
+// EVENT LISTENERS
+// ═══════════════════════════════════════════════
+
+// Captation
 document.getElementById('btn-preview').addEventListener('click', function () {
-  const data = collectData();
-  const doc = buildPDF(data);
-  const blob = doc.output('blob');
-  const url = URL.createObjectURL(blob);
-  const iframe = document.getElementById('pdf-iframe');
-  iframe.src = url;
-  document.getElementById('pdf-preview').classList.remove('hidden');
-  iframe.scrollIntoView({ behavior: 'smooth' });
+  var data = collectData();
+  var doc = buildPDF(data);
+  showPreview(doc);
 });
 
 document.getElementById('btn-download').addEventListener('click', function () {
-  const data = collectData();
-  const doc = buildPDF(data);
-  const filename = `Autorisation_captation_${data.classe || 'classe'}_${data.projet || 'projet'}.pdf`;
+  var data = collectData();
+  var doc = buildPDF(data);
+  var filename = 'Autorisation_captation_' + (data.classe || 'classe') + '_' + (data.projet || 'projet') + '.pdf';
   doc.save(filename.replace(/\s+/g, '_'));
 });
+
+// Sortie
+document.getElementById('btn-preview-sortie').addEventListener('click', function () {
+  var data = collectSortieData();
+  var doc = buildSortiePDF(data);
+  showPreview(doc);
+});
+
+document.getElementById('btn-download-sortie').addEventListener('click', function () {
+  var data = collectSortieData();
+  var doc = buildSortiePDF(data);
+  var filename = 'Sortie_scolaire_' + (data.classe || 'classe') + '_' + (data.date || 'date') + '.pdf';
+  doc.save(filename.replace(/\s+/g, '_'));
+});
+
+function showPreview(doc) {
+  var blob = doc.output('blob');
+  var url = URL.createObjectURL(blob);
+  var iframe = document.getElementById('pdf-iframe');
+  iframe.src = url;
+  document.getElementById('pdf-preview').classList.remove('hidden');
+  iframe.scrollIntoView({ behavior: 'smooth' });
+}

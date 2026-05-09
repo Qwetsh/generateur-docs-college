@@ -1,0 +1,270 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f0f2f5;
+  color: #1a1a2e;
+  min-height: 100vh;
+}
+
+header {
+  background: #000091;
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  opacity: 0.8;
+  margin-top: 0.25rem;
+  font-size: 0.95rem;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.doc-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.doc-tab {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #000091;
+  background: white;
+  color: #000091;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.doc-tab.active,
+.doc-tab:hover {
+  background: #000091;
+  color: white;
+}
+
+fieldset {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+legend {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #000091;
+  padding: 0 0.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group {
+  margin-bottom: 0.75rem;
+}
+
+.form-group.full {
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #000091;
+  box-shadow: 0 0 0 2px rgba(0, 0, 145, 0.1);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Support list */
+.fieldset-hint {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.support-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.support-item {
+  background: #f9f9ff;
+  border: 1px solid #e8e8f0;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem;
+}
+
+.support-item .checkbox-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.support-detail {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-left: 1.5rem;
+  margin-top: 0.2rem;
+}
+
+.support-precision {
+  display: block;
+  margin-top: 0.4rem;
+  margin-left: 1.5rem;
+  width: calc(100% - 1.5rem);
+  max-width: calc(100% - 1.5rem);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.support-sub {
+  margin-left: 1.5rem;
+  margin-top: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-bottom: 0.2rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.actions button {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#btn-preview {
+  background: white;
+  color: #000091;
+  border: 2px solid #000091;
+}
+
+#btn-preview:hover {
+  background: #f5f5fe;
+}
+
+#btn-download {
+  background: #000091;
+  color: white;
+}
+
+#btn-download:hover {
+  background: #0000b8;
+}
+
+/* PDF Preview */
+.pdf-preview {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.pdf-preview h2 {
+  font-size: 1rem;
+  color: #000091;
+  margin-bottom: 0.75rem;
+}
+
+.pdf-preview iframe {
+  width: 100%;
+  height: 800px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .exploitation-table {
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generateur de documents - College</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Generateur de Documents Officiels</h1>
+    <p class="subtitle">College Pierre Mendes France</p>
+  </header>
+
+  <main>
+    <nav class="doc-nav">
+      <button class="doc-tab active" data-doc="captation">Autorisation Captation Image/Son</button>
+    </nav>
+
+    <form id="form-captation">
+      <!-- EN-TETE ETABLISSEMENT -->
+      <fieldset>
+        <legend>Etablissement</legend>
+        <div class="form-row">
+          <div class="form-group full">
+            <label for="etablissement">Ecole ou etablissement scolaire</label>
+            <input type="text" id="etablissement" value="College Pierre Mendes France">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tel">Telephone</label>
+            <input type="text" id="tel" value="03 87 54 36 40">
+          </div>
+          <div class="form-group">
+            <label for="codepostal">Code postal / Commune</label>
+            <input type="text" id="codepostal" value="57140 WOIPPY">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="annee">Annee scolaire</label>
+            <input type="text" id="annee" value="2026">
+          </div>
+          <div class="form-group">
+            <label for="classe">Classe de</label>
+            <input type="text" id="classe" placeholder="Ex: Cinquieme">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- FINALITES -->
+      <fieldset>
+        <legend>1 - Finalites envisagees</legend>
+        <div class="form-group full">
+          <label for="finalites">Description des finalites</label>
+          <textarea id="finalites" rows="4" placeholder="Detaillez les finalites envisagees..."></textarea>
+        </div>
+      </fieldset>
+
+      <!-- PROJET -->
+      <fieldset>
+        <legend>2 - Designation du projet audio-visuel</legend>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projet">Nom du projet</label>
+            <input type="text" id="projet" placeholder="Ex: La meteo du futur">
+          </div>
+          <div class="form-group">
+            <label for="titre-oeuvre">Titre de l'oeuvre (si applicable)</label>
+            <input type="text" id="titre-oeuvre" placeholder="Ex: Meteo du futur">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="date-debut">Date(s) d'enregistrement - du</label>
+            <input type="date" id="date-debut">
+          </div>
+          <div class="form-group">
+            <label for="date-fin">au</label>
+            <input type="date" id="date-fin">
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="lieu">Lieu(x) d'enregistrement</label>
+          <input type="text" id="lieu" placeholder="Ex: Salles 400">
+        </div>
+      </fieldset>
+
+      <!-- MODES D'EXPLOITATION -->
+      <fieldset>
+        <legend>3 - Supports envisages (cochez ceux prevus)</legend>
+        <p class="fieldset-hint">Seuls les supports coches apparaitront dans le PDF. Les parents pourront autoriser ou refuser chaque support individuellement.</p>
+        <div class="support-list">
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-classe" checked> Usage collectif en classe</label>
+            <span class="support-detail">Personnel admin, equipe peda, vie scolaire, eleves</span>
+          </div>
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-ent"> En ligne (acces reserve : ENT, plateforme, extranet)</label>
+            <input type="text" id="exploit-ent-site" class="support-precision" placeholder="Precisez le(s) site(s)...">
+          </div>
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-internet"> En ligne - Internet (monde entier)</label>
+            <input type="text" id="exploit-internet-site" class="support-precision" placeholder="Precisez le(s) site(s)...">
+          </div>
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-stockage"> Support de stockage amovible</label>
+            <input type="text" id="exploit-stockage-dest" class="support-precision" placeholder="Precisez les destinataires...">
+          </div>
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-projection" checked> Projection collective</label>
+            <div class="support-sub">
+              <label class="checkbox-label"><input type="checkbox" id="proj-classe" checked> Usage collectif dans les classes</label>
+              <label class="checkbox-label"><input type="checkbox" id="proj-instit"> Autres usages institutionnels</label>
+              <label class="checkbox-label"><input type="checkbox" id="proj-externe"> Communication externe</label>
+            </div>
+          </div>
+          <div class="support-item">
+            <label class="checkbox-label"><input type="checkbox" id="exploit-autre"> Autre</label>
+            <input type="text" id="exploit-autre-dest" class="support-precision" placeholder="Precisez...">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="button" id="btn-preview">Apercu PDF</button>
+        <button type="button" id="btn-download">Telecharger PDF</button>
+      </div>
+    </form>
+
+    <div id="pdf-preview" class="pdf-preview hidden">
+      <h2>Apercu</h2>
+      <iframe id="pdf-iframe"></iframe>
+    </div>
+  </main>
+
+  <script src="lib/jspdf.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
